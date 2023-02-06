@@ -27,7 +27,12 @@ const Tutorial = () => {
           )}
         </div>
       </div>
-      <Keyboard inputText={inputText} lessonText={lessonText} />
+      
+      <Keyboard
+        inputText={inputText}
+        lessonText={lessonText}
+        setInputText={setInputText}
+      />
     </div>
   );
 };

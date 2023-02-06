@@ -14,6 +14,7 @@ const KeyboardItem = ({
 }) => {
   const [isActive, setIsActive] = useState(false);
   const [isErrorActive, setIsErrorActive] = useState(false);
+  const [isSingleErrorActive, setIsSingleErrorActive] = useState(false);
 
   useEffect(() => {
     // console.log(activeKey);
@@ -50,7 +51,7 @@ const KeyboardItem = ({
           className={`flex items-center w-full  h-full px-[10px] ${
             justifyStart ? "justify-start" : "justify-end"
           } text-gray-600 text-sm ${isUpperkey ? "bg-green-200" : "bg-white"}
-          `}
+          ${isSingleErrorActive && "bg-red-200"}`}
         >
           {singleKey}
         </div>

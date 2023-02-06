@@ -13,8 +13,9 @@ import {
   thirdColData,
 } from "../utils/data";
 import KeyboardItem from "./KeyboardItem";
+import ErrorNotification from "../assets/error-notification.wav";
 
-const Keyboard = ({ inputText, lessonText }) => {
+const Keyboard = ({ inputText, lessonText, setInputText }) => {
   const [activeKey, setActiveKey] = useState("");
   const [errorKey, setErrorKey] = useState("");
   const [isUpperkey, setIsUpperkey] = useState(false);
@@ -32,27 +33,31 @@ const Keyboard = ({ inputText, lessonText }) => {
     let lastChar = lessonTextArr[inputTextArr.length];
 
     // console.log(lastChar);
-    if (lastChar == "‌ေ") {
-      lastChar = lastChar.split("")[1];
-      console.log(lastChar.length);
-    }
+    // if (lastChar == "‌ေ") {
+    //   lastChar = lastChar.split("")[1];
+    //   console.log(lastChar.length);
+    // }
 
     setActiveKey(lastChar);
-    setTotalChar([...totalChar, lastChar]);
-    checkUpperkey(lastChar);
-    checkSpacekey(lastChar);
-    checkError(lessonTextArr, inputTextArr);
+    checkError(lastChar, lessonTextArr, inputTextArr);
   };
 
-  const checkError = (lessonTextArr, inputTextArr) => {
+  const checkError = (lastChar, lessonTextArr, inputTextArr) => {
     const lessonTextLastChar = lessonTextArr[inputTextArr.length - 1];
     const inputTextLastChar = inputTextArr[inputTextArr.length - 1];
 
     if (inputTextArr.length > 0) {
       if (lessonTextLastChar != inputTextLastChar) {
+        console.log(inputTextLastChar);
+
         setErrorKey(inputTextLastChar);
+        setIsUpperkey(false);
+        playErrorNotification();
       } else {
         setErrorKey("");
+        setTotalChar([...totalChar, lastChar]);
+        checkUpperkey(lastChar);
+        checkSpacekey(lastChar);
       }
     }
   };
@@ -76,6 +81,12 @@ const Keyboard = ({ inputText, lessonText }) => {
     } else {
       setIsSpacekey(false);
     }
+  };
+
+  const playErrorNotification = () => {
+    const noti = new Audio(ErrorNotification);
+
+    noti.play();
   };
 
   return (
