@@ -1,1 +1,2 @@
-export { default as Tutorial } from "./Tutorial";
+export { default as Lesson } from "./Lesson";
+export { default as Generator } from "./Generator";

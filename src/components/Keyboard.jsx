@@ -7,88 +7,24 @@ import {
   AiOutlineArrowUp,
 } from "react-icons/ai";
 import {
+  fakeKeyboardItem,
   firstColData,
   fouthColData,
   secondColData,
   thirdColData,
 } from "../utils/data";
 import KeyboardItem from "./KeyboardItem";
-import ErrorNotification from "../assets/error-notification.wav";
+import ShiftKey from "./ShiftKey";
+import SpaceKey from "./SpaceKey";
 
-const Keyboard = ({ inputText, lessonText, setInputText }) => {
-  const [activeKey, setActiveKey] = useState("");
-  const [errorKey, setErrorKey] = useState("");
-  const [isUpperkey, setIsUpperkey] = useState(false);
-  const [isSpacekey, setIsSpacekey] = useState(false);
-  const [totalChar, setTotalChar] = useState([]);
-
-  useEffect(() => {
-    startTyping(inputText);
-  }, [inputText]);
-
-  const startTyping = (text) => {
-    const inputTextArr = text.split("");
-    const lessonTextArr = lessonText.split("");
-
-    let lastChar = lessonTextArr[inputTextArr.length];
-
-    // console.log(lastChar);
-    // if (lastChar == "‌ေ") {
-    //   lastChar = lastChar.split("")[1];
-    //   console.log(lastChar.length);
-    // }
-
-    setActiveKey(lastChar);
-    checkError(lastChar, lessonTextArr, inputTextArr);
-  };
-
-  const checkError = (lastChar, lessonTextArr, inputTextArr) => {
-    const lessonTextLastChar = lessonTextArr[inputTextArr.length - 1];
-    const inputTextLastChar = inputTextArr[inputTextArr.length - 1];
-
-    if (inputTextArr.length > 0) {
-      if (lessonTextLastChar != inputTextLastChar) {
-        console.log(inputTextLastChar);
-
-        setErrorKey(inputTextLastChar);
-        setIsUpperkey(false);
-        playErrorNotification();
-      } else {
-        setErrorKey("");
-        setTotalChar([...totalChar, lastChar]);
-        checkUpperkey(lastChar);
-        checkSpacekey(lastChar);
-      }
-    }
-  };
-
-  const checkUpperkey = (key) => {
-    const isExistFir = firstColData.find((data) => data.uMM == key);
-    const isExistSec = secondColData.find((data) => data.uMM == key);
-    const isExistThir = thirdColData.find((data) => data.uMM == key);
-    const isExistFour = fouthColData.find((data) => data.uMM == key);
-
-    if (isExistFir || isExistSec || isExistThir || isExistFour) {
-      setIsUpperkey(true);
-    } else {
-      setIsUpperkey(false);
-    }
-  };
-
-  const checkSpacekey = (key) => {
-    if (key == " ") {
-      setIsSpacekey(true);
-    } else {
-      setIsSpacekey(false);
-    }
-  };
-
-  const playErrorNotification = () => {
-    const noti = new Audio(ErrorNotification);
-
-    noti.play();
-  };
-
+const Keyboard = ({
+  activeKey,
+  errorKey,
+  activeShiftKey,
+  errorSpaceKey,
+  activeSpaceKey,
+  errorShiftKey,
+}) => {
   return (
     <div className="w-screen pb-[10px] absolute bottom-0">
       <div
@@ -97,19 +33,19 @@ const Keyboard = ({ inputText, lessonText, setInputText }) => {
       >
         <div className="flex flex-col gap-[5px]">
           <div className="w-full flex gap-[5px] items-center">
-            {firstColData.map(({ uMM, lMM, eng }, index) => (
+            {firstColData.map((data, index) => (
               <KeyboardItem
-                key={index}
                 activeKey={activeKey}
                 errorKey={errorKey}
-                uMM={uMM}
-                lMM={lMM}
-                eng={eng}
+                key={index}
+                data={data}
               />
             ))}
             <KeyboardItem
               activeKey={activeKey}
+              errorKey={errorKey}
               width="w-[100px]"
+              data={fakeKeyboardItem}
               singleKey="Backspace"
             />
           </div>
@@ -117,18 +53,18 @@ const Keyboard = ({ inputText, lessonText, setInputText }) => {
           <div className="w-full flex gap-[5px] items-center">
             <KeyboardItem
               activeKey={activeKey}
+              errorKey={errorKey}
               width="w-[100px]"
+              data={fakeKeyboardItem}
               singleKey="Tab"
               justifyStart
             />
-            {secondColData.map(({ uMM, lMM, eng }, index) => (
+            {secondColData.map((data, index) => (
               <KeyboardItem
-                key={index}
                 activeKey={activeKey}
                 errorKey={errorKey}
-                uMM={uMM}
-                lMM={lMM}
-                eng={eng}
+                key={index}
+                data={data}
               />
             ))}
           </div>
@@ -136,48 +72,48 @@ const Keyboard = ({ inputText, lessonText, setInputText }) => {
           <div className="w-full flex gap-[5px] items-center">
             <KeyboardItem
               activeKey={activeKey}
+              errorKey={errorKey}
               width="w-[113px]"
+              data={fakeKeyboardItem}
               singleKey="Cap Lock"
               justifyStart
             />
-            {thirdColData.map(({ uMM, lMM, eng }, index) => (
+            {thirdColData.map((data, index) => (
               <KeyboardItem
-                key={index}
                 activeKey={activeKey}
                 errorKey={errorKey}
-                uMM={uMM}
-                lMM={lMM}
-                eng={eng}
+                key={index}
+                data={data}
               />
             ))}
             <KeyboardItem
               activeKey={activeKey}
+              errorKey={errorKey}
               width="w-[113px]"
+              data={fakeKeyboardItem}
               singleKey="Enter"
             />
           </div>
 
           <div className="w-full flex gap-[5px] items-center">
-            <KeyboardItem
-              activeKey={activeKey}
-              width="w-[145px]"
-              singleKey="Shift"
-              justifyStart
-              isUpperkey={isUpperkey}
+            <ShiftKey
+              activeShiftKey={activeShiftKey}
+              errorShiftKey={errorShiftKey}
             />
-            {fouthColData.map(({ uMM, lMM, eng }, index) => (
+
+            {fouthColData.map((data, index) => (
               <KeyboardItem
-                key={index}
                 activeKey={activeKey}
                 errorKey={errorKey}
-                uMM={uMM}
-                lMM={lMM}
-                eng={eng}
+                key={index}
+                data={data}
               />
             ))}
             <KeyboardItem
               activeKey={activeKey}
+              errorKey={errorKey}
               width="w-[145px]"
+              data={fakeKeyboardItem}
               singleKey="Shift "
             />
           </div>
@@ -185,63 +121,78 @@ const Keyboard = ({ inputText, lessonText, setInputText }) => {
           <div className="w-full flex gap-[5px] items-center">
             <KeyboardItem
               activeKey={activeKey}
+              errorKey={errorKey}
               width="w-[70px]"
+              data={fakeKeyboardItem}
               singleKey="Ctrl"
               justifyStart
             />
             <KeyboardItem
               activeKey={activeKey}
+              errorKey={errorKey}
               width="w-[60px]"
+              data={fakeKeyboardItem}
               singleKey={<AiFillWindows size={24} />}
-              justifyStart
+              justifyCenter
             />
             <KeyboardItem
               activeKey={activeKey}
-              justifyStart
+              errorKey={errorKey}
+              justifyCenter
               width="w-[60px]"
+              data={fakeKeyboardItem}
+              singleKey="Alt"
+            />
+            <SpaceKey
+              errorSpaceKey={errorSpaceKey}
+              activeSpaceKey={activeSpaceKey}
+            />
+            <KeyboardItem
+              activeKey={activeKey}
+              errorKey={errorKey}
+              justifyCenter
+              width="w-[60px]"
+              data={fakeKeyboardItem}
               singleKey="Alt"
             />
             <KeyboardItem
               activeKey={activeKey}
-              justifyStart
-              width="w-[350px]"
-              singleKey=" "
-              isUpperkey={isSpacekey}
-            />
-            <KeyboardItem
-              activeKey={activeKey}
-              justifyStart
+              errorKey={errorKey}
+              justifyCenter
               width="w-[60px]"
-              singleKey="Alt"
-            />
-            <KeyboardItem
-              activeKey={activeKey}
-              justifyStart
-              width="w-[60px]"
+              data={fakeKeyboardItem}
               singleKey="Ctrl"
             />
             <KeyboardItem
               activeKey={activeKey}
-              justifyStart
+              errorKey={errorKey}
+              justifyCenter
               width="w-[60px]"
+              data={fakeKeyboardItem}
               singleKey={<AiOutlineArrowLeft size={20} />}
             />
             <KeyboardItem
               activeKey={activeKey}
-              justifyStart
+              errorKey={errorKey}
+              justifyCenter
               width="w-[60px]"
+              data={fakeKeyboardItem}
               singleKey={<AiOutlineArrowDown size={20} />}
             />
             <KeyboardItem
               activeKey={activeKey}
-              justifyStart
+              errorKey={errorKey}
+              justifyCenter
               width="w-[60px]"
+              data={fakeKeyboardItem}
               singleKey={<AiOutlineArrowUp size={20} />}
             />
             <KeyboardItem
               activeKey={activeKey}
-              justifyStart
+              errorKey={errorKey}
+              justifyCenter
               width="w-[60px]"
+              data={fakeKeyboardItem}
               singleKey={<AiOutlineArrowRight size={20} />}
             />
           </div>
