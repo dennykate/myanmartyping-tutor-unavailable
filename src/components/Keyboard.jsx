@@ -14,13 +14,15 @@ import {
   thirdColData,
 } from "../utils/data";
 import KeyboardItem from "./KeyboardItem";
-import ShiftKey from "./ShiftKey";
+import LeftShiftKey from "./LeftShiftKey";
+import RightShiftKey from "./RightShiftKey";
 import SpaceKey from "./SpaceKey";
 
 const Keyboard = ({
   activeKey,
   errorKey,
-  activeShiftKey,
+  activeLeftShiftKey,
+  activeRightShiftKey,
   errorSpaceKey,
   activeSpaceKey,
   errorShiftKey,
@@ -96,8 +98,8 @@ const Keyboard = ({
           </div>
 
           <div className="w-full flex gap-[5px] items-center">
-            <ShiftKey
-              activeShiftKey={activeShiftKey}
+            <LeftShiftKey
+              activeShiftKey={activeLeftShiftKey}
               errorShiftKey={errorShiftKey}
             />
 
@@ -109,12 +111,9 @@ const Keyboard = ({
                 data={data}
               />
             ))}
-            <KeyboardItem
-              activeKey={activeKey}
-              errorKey={errorKey}
-              width="w-[145px]"
-              data={fakeKeyboardItem}
-              singleKey="Shift "
+            <RightShiftKey
+              activeShiftKey={activeRightShiftKey}
+              errorShiftKey={false}
             />
           </div>
 

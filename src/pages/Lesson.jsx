@@ -4,6 +4,8 @@ import {
   allCharData,
   firstColData,
   fouthColData,
+  leftSideKey,
+  rightSideKey,
   secondColData,
   thirdColData,
 } from "../utils/data";
@@ -14,7 +16,8 @@ const Lesson = () => {
   const [outputArr, setOutputArr] = useState([]);
   const [activeKey, setActiveKey] = useState("");
   const [errorKey, setErrorKey] = useState("");
-  const [activeShiftKey, setActiveShiftKey] = useState(false);
+  const [activeLeftShiftKey, setActiveLeftShiftKey] = useState(false);
+  const [activeRightShiftKey, setActiveRightShiftKey] = useState(false);
   const [activeSpaceKey, setActiveSpaceKey] = useState(false);
   const [errorSpaceKey, setErrorSpaceKey] = useState(false);
   const [errorShiftKey, setErrorShiftKey] = useState(false);
@@ -26,11 +29,15 @@ const Lesson = () => {
 
     if (upcomingKey == 32) {
       setActiveSpaceKey(true);
+      
+      setActiveLeftShiftKey(false);
+      setActiveRightShiftKey(false);
     } else {
       if (upcomingKey > 300) {
-        setActiveShiftKey(true);
+        checkActiveShiftKey(upcomingKey);
       } else {
-        setActiveShiftKey(false);
+        setActiveLeftShiftKey(false);
+        setActiveRightShiftKey(false);
       }
     }
   }, [outputArr]);
@@ -104,6 +111,18 @@ const Lesson = () => {
     }
   };
 
+  const checkActiveShiftKey = (upcomingKey) => {
+    const isRightSideKey = rightSideKey.find(
+      (key) => key.keyCode == upcomingKey
+    );
+
+    if (isRightSideKey) setActiveLeftShiftKey(true);
+
+    const isLeftSideKey = leftSideKey.find((key) => key.keyCode == upcomingKey);
+
+    if (isLeftSideKey) setActiveRightShiftKey(true);
+  };
+
   const playErrorNotification = () => {
     const noti = new Audio(ErrorNotification);
 
@@ -143,7 +162,8 @@ const Lesson = () => {
       <Keyboard
         activeKey={activeKey}
         errorKey={errorKey}
-        activeShiftKey={activeShiftKey}
+        activeLeftShiftKey={activeLeftShiftKey}
+        activeRightShiftKey={activeRightShiftKey}
         errorSpaceKey={errorSpaceKey}
         activeSpaceKey={activeSpaceKey}
         errorShiftKey={errorShiftKey}

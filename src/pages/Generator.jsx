@@ -13,7 +13,8 @@ const Generator = () => {
     for (let i = 0; i < charArr.length; i++) {
       const data = allCharData.find((cData) => cData.char == charArr[i]);
 
-        arr.push(data.keyCode);
+      if (data?.keyCode == undefined) continue;
+      arr.push(data.keyCode);
     }
 
     console.log(arr);
