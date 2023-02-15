@@ -29,7 +29,7 @@ const Lesson = () => {
 
     if (upcomingKey == 32) {
       setActiveSpaceKey(true);
-      
+
       setActiveLeftShiftKey(false);
       setActiveRightShiftKey(false);
     } else {
@@ -116,11 +116,17 @@ const Lesson = () => {
       (key) => key.keyCode == upcomingKey
     );
 
-    if (isRightSideKey) setActiveLeftShiftKey(true);
+    if (isRightSideKey) {
+      setActiveLeftShiftKey(true);
+      setActiveRightShiftKey(false);
+    }
 
     const isLeftSideKey = leftSideKey.find((key) => key.keyCode == upcomingKey);
 
-    if (isLeftSideKey) setActiveRightShiftKey(true);
+    if (isLeftSideKey) {
+      setActiveRightShiftKey(true);
+      setActiveLeftShiftKey(false);
+    }
   };
 
   const playErrorNotification = () => {
